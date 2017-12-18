@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 18-dic-2017 18:13:24 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="modelo.entidad.GnrPost" table="gnr_post" catalog="blog" optimistic-lock="version">
+        <id name="postId" type="java.lang.Integer">
+            <column name="post_id" />
+            <generator class="identity" />
+        </id>
+        <property name="postTitle" type="string">
+            <column name="post_title" length="100" not-null="true" />
+        </property>
+        <property name="postSlug" type="string">
+            <column name="post_slug" length="100" not-null="true" />
+        </property>
+        <property name="postAbstract" type="string">
+            <column name="post_abstract" not-null="true" />
+        </property>
+        <property name="postBody" type="string">
+            <column name="post_body" length="65535" not-null="true" />
+        </property>
+        <property name="postDate" type="date">
+            <column name="post_date" length="10" not-null="true" />
+        </property>
+        <property name="postVisible" type="string">
+            <column name="post_visible" length="10" not-null="true" />
+        </property>
+        <property name="postImage" type="string">
+            <column name="post_image" length="200" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
