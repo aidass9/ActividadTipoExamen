@@ -10,11 +10,24 @@
     </head>
 
     <body>
+        <%
+
+            if (request.getSession().getAttribute("mensaje") != null) {
+                out.println("<div class='mensaje'>" + request.getSession().getAttribute("mensaje").toString() + "</div>");
+                request.getSession().removeAttribute("mensaje");
+            }
+
+            if (request.getSession().getAttribute("error") != null) {
+                out.println("<div class='error'>" + request.getSession().getAttribute("error").toString() + "</div>");
+                request.getSession().removeAttribute("error");
+            }
+        %>
 
         <c:forEach var="post" items="${posts}">
+            <a href="<c:url value="/${post.getPostSlug()}"/>">VER MÁS</a>
             <c:out value="${post.getPostTitle()}"></c:out> - 
             <img src="<c:url value="/imagenes/${post.getPostImage()}"/>">
-            <a href="borrar/<c:out value="${post.getPostId()}"></c:out>"><button>Borrar</button></a><hr>
+            <a href="<c:url value="/borrar/${post.getPostId()}"/>"><button>Borrar</button></a><hr>
         </c:forEach>
 
 
