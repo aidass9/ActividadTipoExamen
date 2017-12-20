@@ -5,15 +5,21 @@
  */
 package controller;
 
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.DAO.GnrPost_DAO;
 import modelo.entidad.GnrPost;
 import org.springframework.stereotype.Controller;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 /**
  *
@@ -23,7 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class BlogController {
 
     @RequestMapping({"/index.htm", "/"})
-    public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView index() {
 
         ModelAndView mv = new ModelAndView("index");
         try {
@@ -67,7 +73,7 @@ public class BlogController {
     
     @RequestMapping(value = "/{slug}")
     public ModelAndView detalle(@PathVariable("slug") String post_slug) {
-        System.out.println("DETALLE" + post_slug);
+        
         ModelAndView mv = new ModelAndView("BlogDetalle");
         
         try {
@@ -84,6 +90,54 @@ public class BlogController {
         return mv;
 
         
+    }
+    
+    @RequestMapping(value = "/crear", method = RequestMethod.POST)
+    public ModelAndView crear(HttpServletRequest request,
+            @RequestParam("postTitle") String postTitle,
+            @RequestParam("postSlug") String postSlug,
+            @RequestParam("postBody") String postBody
+            ) {
+       
+        ModelAndView mv = new ModelAndView("crearPost");
+        if (StringUtils.isEmpty(postTitle) || StringUtils.isEmpty(postSlug) ||
+            StringUtils.isEmpty(postBody)) {
+            
+            request.getSession().setAttribute("error", "Debes rellenar todos los campos");
+        }
+        else {
+            GnrPost post = new GnrPost();
+                post.setPostTitle(postTitle);
+                post.setPostSlug(postSlug);
+                post.setPostBody(postBody);
+                post.setPostDate(new Date());
+                post.setPostAbstract("Abstract");
+                post.setPostVisible("Mostrar");
+                post.setPostImage("foto.jpg");
+                
+                
+                boolean resultado = GnrPost_DAO.crear(post);
+                
+                if(resultado) {
+                    request.getSession().setAttribute("mensaje", "Post creado correctamente");
+                    mv = this.index();
+                }
+                else {
+                    request.getSession().setAttribute("error", "Error al crear el post");
+                }
+            
+            
+        }
+        return mv;
+
+    }
+    
+    @RequestMapping(value = "/formularioCrear")
+    public ModelAndView formularioCrear() {
+        ModelAndView mv = new ModelAndView("crearPost");
+ 
+        return mv;
+ 
     }
 
 }

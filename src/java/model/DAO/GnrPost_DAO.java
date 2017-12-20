@@ -69,4 +69,22 @@ public class GnrPost_DAO {
         return post;
 
     }
+
+    public static boolean crear(GnrPost post) {
+        Transaction transaction = null;
+        
+        try {
+            
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            
+            session.save(post);
+            transaction.commit();
+            return true;
+
+        } catch (Exception e) {
+            transaction.rollback();
+            return false;
+        }
+    }
 }

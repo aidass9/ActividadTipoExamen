@@ -10,6 +10,8 @@
     </head>
 
     <body>
+        
+        <a href="<c:url value="/formularioCrear"/>"><button>CREAR</button></a>
         <%
 
             if (request.getSession().getAttribute("mensaje") != null) {
