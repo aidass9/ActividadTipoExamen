@@ -17,7 +17,7 @@ public class GnrPost_DAO {
         List<GnrPost> posts = null;
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
-            String hql = "FROM GnrPost";
+            String hql = "FROM GnrPost ORDER BY postDate DESC";
             Query query = session.createQuery(hql);
             
             posts = query.list();
