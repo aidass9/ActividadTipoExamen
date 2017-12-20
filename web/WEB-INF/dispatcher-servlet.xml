@@ -17,7 +17,7 @@
     define an explicit mapping for it.
     -->
     <mvc:annotation-driven/>
-
+    <mvc:resources mapping="/imagenes/**" location="/imagenes/" />
     
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver"

@@ -13,7 +13,7 @@
 
         <c:forEach var="post" items="${posts}">
             <c:out value="${post.getPostTitle()}"></c:out> - 
-            <c:out value="${post.getPostImage()}"></c:out> 
+            <img src="<c:url value="/imagenes/${post.getPostImage()}"/>">
             <a href="borrar/<c:out value="${post.getPostId()}"></c:out>"><button>Borrar</button></a><hr>
         </c:forEach>
 
