@@ -21,11 +21,12 @@
             }
         %>
         
-        <form method="POST" action="<c:url value='/crear'/>">
+        <form method="POST" action="<c:url value='/editar'/>">
+            <input type="hidden" name="post_id" value="${post_id}"/>
             Título: <input type="text" name="postTitle" value="<c:out value="${postTitle}"/>"><br>
             Slug: <input type="text" name="postSlug" value="<c:out value="${postSlug}"/>"><br>
-            Body: <input type="text" name="postBody" value="<c:out value="${postBody}"/>"><br>
-            <input type="submit" value="Crear">
+            Body: <textarea name="postBody">${postBody}</textarea> <br>
+            <input type="submit" value="Editar">
               
             
         </form>

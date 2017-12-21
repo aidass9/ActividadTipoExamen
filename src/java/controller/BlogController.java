@@ -146,7 +146,47 @@ public class BlogController {
         mv.addObject("postTitle", post.getPostTitle());
         mv.addObject("postSlug", post.getPostSlug());
         mv.addObject("postBody", post.getPostBody());
+        mv.addObject("post_id", post.getPostId());
 
+        return mv;
+
+    }
+    
+    @RequestMapping(value = "/editar", method = RequestMethod.POST)
+    public ModelAndView editar(HttpServletRequest request,
+            @RequestParam("postTitle") String postTitle,
+            @RequestParam("postSlug") String postSlug,
+            @RequestParam("postBody") String postBody,
+            @RequestParam("post_id") Integer post_id
+    ) {
+
+        ModelAndView mv = new ModelAndView("editarPost");
+        mv.addObject("postTitle", postTitle);
+        mv.addObject("postSlug", postSlug);
+        mv.addObject("postBody", postBody);
+        mv.addObject("post_id", post_id);
+
+        if (StringUtils.isEmpty(postTitle) || StringUtils.isEmpty(postSlug)
+                || StringUtils.isEmpty(postBody) || StringUtils.isEmpty(post_id)) {
+            
+            request.getSession().setAttribute("error", "Debes rellenar todos los campos");
+        } else {
+            GnrPost post = new GnrPost();
+            post.setPostTitle(postTitle);
+            post.setPostSlug(postSlug);
+            post.setPostBody(postBody);
+            post.setPostId(post_id);
+
+            boolean resultado = GnrPost_DAO.update(post);
+
+            if (resultado) {
+                request.getSession().setAttribute("mensaje", "Post editado correctamente");
+                mv = new ModelAndView("redirect:/index.htm");
+            } else {
+                request.getSession().setAttribute("error", "Error al editar el post");
+            }
+
+        }
         return mv;
 
     }

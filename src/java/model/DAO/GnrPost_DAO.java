@@ -31,14 +31,14 @@ public class GnrPost_DAO {
 
     static public boolean delete(Integer postId) {
         Transaction transaction = null;
-        
+
         try {
-            
+
             Session session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             String hql = "DELETE FROM GnrPost WHERE postId=:postId";
             Query query = session.createQuery(hql);
-            
+
             query.setInteger("postId", postId);
             query.executeUpdate();
             transaction.commit();
@@ -50,20 +50,18 @@ public class GnrPost_DAO {
         }
 
     }
-    
+
     static public GnrPost getBySlug(String post_slug) {
         GnrPost post = null;
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             String hql = "FROM GnrPost WHERE post_slug=:post_slug";
             Query query = session.createQuery(hql);
-            
-              query.setString("post_slug", post_slug);
+
+            query.setString("post_slug", post_slug);
 
             post = (GnrPost) query.uniqueResult();
-        }
-        
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return post;
@@ -72,12 +70,12 @@ public class GnrPost_DAO {
 
     public static boolean crear(GnrPost post) {
         Transaction transaction = null;
-        
+
         try {
-            
+
             Session session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            
+
             session.save(post);
             transaction.commit();
             return true;
@@ -88,22 +86,47 @@ public class GnrPost_DAO {
         }
     }
 
-    public static GnrPost getById(Integer post_id) { 
+    public static GnrPost getById(Integer post_id) {
         GnrPost post = null;
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             String hql = "FROM GnrPost WHERE post_id=:post_id";
             Query query = session.createQuery(hql);
-            
-              query.setInteger("post_id", post_id);
+
+            query.setInteger("post_id", post_id);
 
             post = (GnrPost) query.uniqueResult();
-        }
-        
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return post;
-        
+
+    }
+
+    public static boolean update(GnrPost post) {
+        Transaction transaction = null;
+
+        try {
+
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            String hql = "UPDATE GnrPost SET post_title=:post_title, post_slug=:post_slug, post_body=:post_body WHERE post_id=:post_id";
+
+            Query query = session.createQuery(hql);
+
+            query.setString("post_title", post.getPostTitle());
+            query.setString("post_slug", post.getPostSlug());
+            query.setString("post_body", post.getPostBody());
+            query.setInteger("post_id", post.getPostId());
+            query.executeUpdate();
+            transaction.commit();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+            return false;
+        }
     }
 }

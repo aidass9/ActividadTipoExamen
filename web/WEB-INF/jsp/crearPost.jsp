@@ -24,7 +24,7 @@
         <form method="POST" action="<c:url value='/crear'/>">
             Título: <input type="text" name="postTitle" value="<c:out value="${postTitle}"/>"><br>
             Slug: <input type="text" name="postSlug" value="<c:out value="${postSlug}"/>"><br>
-            Body: <input type="text" name="postBody" value="<c:out value="${postBody}"/>"><br>
+            Body: <textarea name="postBody">${postBody}</textarea> <br>
             <input type="submit" value="Crear">
               
             
