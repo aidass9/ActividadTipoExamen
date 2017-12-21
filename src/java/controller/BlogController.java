@@ -35,7 +35,7 @@ public class BlogController {
         try {
             List<GnrPost> posts = GnrPost_DAO.getAllPosts();
             mv.addObject("posts", posts);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -57,10 +57,10 @@ public class BlogController {
                 //mv.addObject("error", "Borrado correctamente");
             } else {
                 request.getSession().setAttribute("error", "Fallo al borrar");
-                
+
                 //mv.addObject("error", "Error al borrar");
             }
-            
+
             //mv.addObject("posts", posts);
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,75 +69,85 @@ public class BlogController {
 
         return "redirect:/index.htm";
     }
-    
-    
+
     @RequestMapping(value = "/{slug}")
     public ModelAndView detalle(@PathVariable("slug") String post_slug) {
-        
+
         ModelAndView mv = new ModelAndView("BlogDetalle");
-        
+
         try {
             GnrPost post = GnrPost_DAO.getBySlug(post_slug);
             //System.out.println("HOLII" + post.toString());
             mv.addObject("post", post);
-            
+
             //mv.addObject("posts", posts);
         } catch (Exception e) {
             e.printStackTrace();
 
         }
-        
+
         return mv;
 
-        
     }
-    
+
     @RequestMapping(value = "/crear", method = RequestMethod.POST)
     public ModelAndView crear(HttpServletRequest request,
             @RequestParam("postTitle") String postTitle,
             @RequestParam("postSlug") String postSlug,
             @RequestParam("postBody") String postBody
-            ) {
-       
+    ) {
+
         ModelAndView mv = new ModelAndView("crearPost");
-        if (StringUtils.isEmpty(postTitle) || StringUtils.isEmpty(postSlug) ||
-            StringUtils.isEmpty(postBody)) {
-            
+        mv.addObject("postTitle", postTitle);
+        mv.addObject("postSlug", postSlug);
+        mv.addObject("postBody", postBody);
+
+        if (StringUtils.isEmpty(postTitle) || StringUtils.isEmpty(postSlug)
+                || StringUtils.isEmpty(postBody)) {
+            System.out.println(postTitle);
             request.getSession().setAttribute("error", "Debes rellenar todos los campos");
-        }
-        else {
+        } else {
             GnrPost post = new GnrPost();
-                post.setPostTitle(postTitle);
-                post.setPostSlug(postSlug);
-                post.setPostBody(postBody);
-                post.setPostDate(new Date());
-                post.setPostAbstract("Abstract");
-                post.setPostVisible("Mostrar");
-                post.setPostImage("foto.jpg");
-                
-                
-                boolean resultado = GnrPost_DAO.crear(post);
-                
-                if(resultado) {
-                    request.getSession().setAttribute("mensaje", "Post creado correctamente");
-                    mv = this.index();
-                }
-                else {
-                    request.getSession().setAttribute("error", "Error al crear el post");
-                }
-            
-            
+            post.setPostTitle(postTitle);
+            post.setPostSlug(postSlug);
+            post.setPostBody(postBody);
+            post.setPostDate(new Date());
+            post.setPostAbstract("Abstract");
+            post.setPostVisible("Mostrar");
+            post.setPostImage("foto.jpg");
+
+            boolean resultado = GnrPost_DAO.crear(post);
+
+            if (resultado) {
+                request.getSession().setAttribute("mensaje", "Post creado correctamente");
+                mv = new ModelAndView("redirect:/index.htm");
+            } else {
+                request.getSession().setAttribute("error", "Error al crear el post");
+            }
+
         }
         return mv;
 
     }
-    
+
     @RequestMapping(value = "/formularioCrear")
     public ModelAndView formularioCrear() {
         ModelAndView mv = new ModelAndView("crearPost");
- 
+
         return mv;
- 
+
     }
 
+    @RequestMapping(value = "/formularioEditar/{id}")
+    public ModelAndView formularioEditar(@PathVariable("id") Integer post_id) {
+        ModelAndView mv = new ModelAndView("editarPost");
+        GnrPost post = GnrPost_DAO.getById(post_id);
+        
+        mv.addObject("postTitle", post.getPostTitle());
+        mv.addObject("postSlug", post.getPostSlug());
+        mv.addObject("postBody", post.getPostBody());
+
+        return mv;
+
+    }
 }

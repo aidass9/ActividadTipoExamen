@@ -29,7 +29,8 @@
             <a href="<c:url value="/${post.getPostSlug()}"/>">VER MÁS</a>
             <c:out value="${post.getPostTitle()}"></c:out> - 
             <img src="<c:url value="/imagenes/${post.getPostImage()}"/>">
-            <a href="<c:url value="/borrar/${post.getPostId()}"/>"><button>Borrar</button></a><hr>
+            <a href="<c:url value="/borrar/${post.getPostId()}"/>"><button>Borrar</button></a>
+            <a href="<c:url value="/formularioEditar/${post.getPostId()}"/>"><button>Editar</button></a><hr>
         </c:forEach>
 
 

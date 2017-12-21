@@ -87,4 +87,23 @@ public class GnrPost_DAO {
             return false;
         }
     }
+
+    public static GnrPost getById(Integer post_id) { 
+        GnrPost post = null;
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            String hql = "FROM GnrPost WHERE post_id=:post_id";
+            Query query = session.createQuery(hql);
+            
+              query.setInteger("post_id", post_id);
+
+            post = (GnrPost) query.uniqueResult();
+        }
+        
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return post;
+        
+    }
 }

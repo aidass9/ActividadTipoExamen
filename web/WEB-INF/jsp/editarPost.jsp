@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Crear post</title>
+        <title>Editar post</title>
     </head>
     <body>
         <%
