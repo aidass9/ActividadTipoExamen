@@ -13,6 +13,11 @@
         <title>Crear post</title>
     </head>
     <body>
+        <!-- index.jsp : mirar els links per als css
+            dispatchet servlet i cambiar mvc assets
+            asssets i detro las imagenes
+        cambiar rutas imagenes
+        -->
         <%
 
             if (request.getSession().getAttribute("error") != null) {
